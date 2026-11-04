@@ -1,0 +1,120 @@
+# https://taskfile.dev
+version: "3"
+
+vars:
+  TAURI_DIR: src-tauri
+
+tasks:
+  default:
+    desc: List the available tasks
+    silent: true
+    cmds:
+      - task --list
+
+  # --- Dependencies ---------------------------------------------------------
+
+  install:
+    desc: Install the frontend dependencies
+    cmds:
+      - pnpm install
+
+  deps:
+    internal: true
+    status:
+      - test -d node_modules
+    cmds:
+      - pnpm install
+
+  # --- Development ----------------------------------------------------------
+
+  dev:
+    desc: Run the desktop app with hot reload
+    deps: [deps]
+    cmds:
+      - pnpm tauri dev
+
+  dev:web:
+    desc: Run only the frontend dev server (Tauri APIs are unavailable)
+    deps: [deps]
+    cmds:
+      - pnpm dev
+
+  # --- Build ----------------------------------------------------------------
+
+  build:
+    desc: Build the release app and installers
+    deps: [deps]
+    cmds:
+      - pnpm tauri build
+
+  build:debug:
+    desc: Build a debug .app bundle, without installers
+    deps: [deps]
+    cmds:
+      - pnpm tauri build --debug --bundles app
+
+  build:web:
+    desc: Type-check and build only the frontend
+    deps: [deps]
+    cmds:
+      - pnpm build
+
+  # --- Quality --------------------------------------------------------------
+
+  fmt:
+    desc: Format the Rust code
+    dir: "{{.TAURI_DIR}}"
+    cmds:
+      - cargo fmt
+
+  fmt:check:
+    desc: Verify the Rust code formatting
+    dir: "{{.TAURI_DIR}}"
+    cmds:
+      - cargo fmt --check
+
+  typecheck:
+    desc: Type-check the frontend
+    deps: [deps]
+    cmds:
+      - pnpm exec tsc --noEmit
+
+  lint:
+    desc: Lint the Rust code, treating warnings as errors
+    dir: "{{.TAURI_DIR}}"
+    cmds:
+      - cargo clippy --all-targets -- -D warnings
+
+  test:
+    desc: Run the Rust tests
+    dir: "{{.TAURI_DIR}}"
+    cmds:
+      - cargo test
+
+  check:
+    desc: Run every formatting, type, lint and test check
+    cmds:
+      - task: fmt:check
+      - task: typecheck
+      - task: lint
+      - task: test
+
+  # --- Maintenance ----------------------------------------------------------
+
+  info:
+    desc: Show the Tauri environment and versions
+    deps: [deps]
+    cmds:
+      - pnpm tauri info
+
+  clean:
+    desc: Remove the build output (dist and the Rust target directory)
+    cmds:
+      - rm -rf dist
+      - cargo clean --manifest-path {{.TAURI_DIR}}/Cargo.toml
+
+  clean:all:
+    desc: Remove the build output and node_modules
+    cmds:
+      - task: clean
+      - rm -rf node_modules

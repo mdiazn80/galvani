@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Galvani</title>
+  <rect width="64" height="64" rx="14" fill="#111318"/>
+  <g transform="translate(32 32) scale(0.58) translate(-50 -50)" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74.04 25.96 A34 34 0 1 0 84 50" stroke="#FFFFFF"/>
+    <path d="M84 50 L68 50 L63 39 L57 61 L52 50 L46 50" stroke="#FF5A1F"/>
+  </g>
+</svg>
