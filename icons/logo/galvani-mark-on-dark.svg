@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
-  <title>Galvani</title>
-  <g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M74.04 25.96 A34 34 0 1 0 84 50" stroke="#FFFFFF"/>
-    <path d="M84 50 L68 50 L63 39 L57 61 L52 50 L46 50" stroke="#FF5A1F"/>
-  </g>
-</svg>

@@ -62,16 +62,18 @@ tasks:
   # --- Quality --------------------------------------------------------------
 
   fmt:
-    desc: Format the Rust code
-    dir: "{{.TAURI_DIR}}"
+    desc: Format the Rust and frontend code
+    deps: [deps]
     cmds:
-      - cargo fmt
+      - cargo fmt --manifest-path {{.TAURI_DIR}}/Cargo.toml
+      - pnpm format
 
   fmt:check:
-    desc: Verify the Rust code formatting
-    dir: "{{.TAURI_DIR}}"
+    desc: Verify the Rust and frontend code formatting
+    deps: [deps]
     cmds:
-      - cargo fmt --check
+      - cargo fmt --check --manifest-path {{.TAURI_DIR}}/Cargo.toml
+      - pnpm format:check
 
   typecheck:
     desc: Type-check the frontend
@@ -80,16 +82,18 @@ tasks:
       - pnpm exec tsc --noEmit
 
   lint:
-    desc: Lint the Rust code, treating warnings as errors
-    dir: "{{.TAURI_DIR}}"
+    desc: Lint the Rust and frontend code, treating warnings as errors
+    deps: [deps]
     cmds:
-      - cargo clippy --all-targets -- -D warnings
+      - cargo clippy --all-targets --manifest-path {{.TAURI_DIR}}/Cargo.toml -- -D warnings
+      - pnpm lint --max-warnings 0
 
   test:
-    desc: Run the Rust tests
-    dir: "{{.TAURI_DIR}}"
+    desc: Run the Rust and frontend tests
+    deps: [deps]
     cmds:
-      - cargo test
+      - cargo test --manifest-path {{.TAURI_DIR}}/Cargo.toml
+      - pnpm test
 
   check:
     desc: Run every formatting, type, lint and test check
