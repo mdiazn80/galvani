@@ -1,0 +1,6 @@
+dist
+docs
+icons
+public
+src-tauri
+pnpm-lock.yaml
